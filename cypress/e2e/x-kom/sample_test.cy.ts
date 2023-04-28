@@ -4,7 +4,12 @@ let username = 'nieisteniejącyUser@testowy-x-kom.com';
 let password = 'Has3Łko!';
 const api_auth_key = "jfsTOgOL23CN2G8Y"
 
+
+
 describe('TEST SCENARIO', () => {
+   /**REVIEW:
+    * ten console log powinien wyświetlać się tylko raz,
+    */
    beforeEach(() => {
       console.log("przed testem")
    });
@@ -12,7 +17,6 @@ describe('TEST SCENARIO', () => {
    /**REVIEW:
     * testy nie powinny znajdować się w jednej sekcji it()
     */
-
    it('TEST CASE 1', () => {
 
          /*
@@ -39,7 +43,7 @@ describe('TEST SCENARIO', () => {
 
 
       /**REVIEW:
-       * niepotrzebne wczytanie strony głównej przed sekcją logowania
+       * poszczególne kroki nie są / są źle ponumerowane
        * zbyt długi wait
        */
       cy.visit("https://www.fakesklepzadanierekrutacyjne.pl")
@@ -58,6 +62,11 @@ describe('TEST SCENARIO', () => {
 
       // 1 produkt
 
+      /**REVIEW:
+       * użyta jest niezdefiniowana funkcja fill()
+       * być może chodziło o funkcję type()
+       */
+
       cy.visit('https://www.fakesklepzadanierekrutacyjne.pl/');
       cy.get('[data-cy="search_bar_row_wrapper"] input')
          .clear()
@@ -73,6 +82,11 @@ describe('TEST SCENARIO', () => {
 
       cy.get("[data-cy="add_to_basket_modal_layout"]").should('have.visibility');
       cy.contains(modalLayout, 'Wróć do zakupów').click;
+
+      /**REVIEW:
+       * kod jest mało czytelny, powinien być oddzielony pustymi liniami
+       *
+       */
 
       // 2gi produkt
       cy.visit('https://www.fakesklepzadanierekrutacyjne.pl');
@@ -91,6 +105,7 @@ describe('TEST SCENARIO', () => {
       cy.contains(modalLayout, 'Wróć do zakupów').click;
 
       // 3gi produkt
+
 
       cy.visit('https://www.fakesklepzadanierekrutacyjne.pl');
       cy.get('[data-cy="search_bar_row_wrapper"] input')
@@ -116,6 +131,11 @@ describe('TEST SCENARIO', () => {
 
       // spradzenie czy w koszyku jest odpowiednia ilość produktów
 
+      /**REVIEW:
+       * ilość produktów nie powinna być w osobnej zmiennej / stałej
+       *
+       */
+
       cy.open('https://www.fakesklepzadanierekrutacyjne.pl/koszyk');
       cy.get('[data-cy="basket_item"]').should('be.visible');
       cy.get('[data-cy="basket_item"]').should('have.count', 4);
@@ -130,10 +150,20 @@ describe('TEST SCENARIO', () => {
       })
 
       // Usuwanie 2 produktów z koszyka (2 pierwszych z listy)
+      /**REVIEW:
+       * żadne produkty nie są usuwane
+       */
 
       cy.get('[data-cy="basket_item"]').eq(1).filter("[data-cy=remove_button]").should('be.visible').click();
       cy.get('[data-cy="basket_item"]').eq(2).filter("[data-cy=remove_button]").should('be.visible').click();
 
+
+      /**REVIEW:
+       * test nie powinien weryfikować czy "kontynuuj jako gość" jest widoczny, tylko czy nie jest widoczny
+       * selectory nie są dokładne i powinny zawierać np. data-cy lub buttony
+       * get powinien mieć kolejne funkcje łańcuchowe, np .should()
+       * ostatnia linijka powinna użyć cy.url()
+       */
       // Weryfikacja ze mozna kontynuować jako gość, ale przejście do formularza założenia konta
       cy.contains("button", "Przejdź do dostawy").click()
       cy.contains("Kontynuj jako gość").should('not.be.visible')

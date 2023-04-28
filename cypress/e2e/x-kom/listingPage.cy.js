@@ -53,7 +53,6 @@ context('ListingPage', () => {
 
     it('Choose category from top bar', () => {
 
-        //I couldn't find any non-class selector
         cy.get('.sc-13hctwf-5.bdvNWx')
             .contains(category)
             .click();
